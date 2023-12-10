@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas - MVC</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2 class="mb-4">Lista de Tareas</h2>
+                <input type="text" id="taskInput" class="form-control mb-3" placeholder="Nueva tarea">
+                <button onclick="addTask()" class="btn btn-primary btn-block">Agregar Tarea</button>
+                <ul id="taskList" class="list-group mt-3"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modelo
+        const model = {
+            tasks: [],
+            addTask: function(task) {
+                this.tasks.push(task);
+            },
+            getTasks: function() {
+                return this.tasks;
+            }
+        };
+
+        // Vista
+        const view = {
+            render: function() {
+                const taskList = document.getElementById('taskList');
+                taskList.innerHTML = '';
+                const tasks = controller.getTasks();
+                tasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item';
+                    li.appendChild(document.createTextNode(task));
+                    taskList.appendChild(li);
+                });
+            }
+        };
+
+        // Controlador
+        const controller = {
+            addTask: function() {
+                const taskInput = document.getElementById('taskInput');
+                const newTask = taskInput.value.trim();
+                if (newTask !== '') {
+                    model.addTask(newTask);
+                    taskInput.value = '';
+                    view.render();
+                }
+            },
+            getTasks: function() {
+                return model.getTasks();
+            }
+        };
+
+        // Inicializar la vista
+        view.render();
+
+        // Función para agregar tarea al hacer clic en el botón
+        function addTask() {
+            controller.addTask();
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
